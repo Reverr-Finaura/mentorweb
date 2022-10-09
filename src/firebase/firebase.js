@@ -1,7 +1,13 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import {
+  getFirestore,
+  getDocs,
+  collection,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -20,3 +26,30 @@ const auth = getAuth();
 const db = getFirestore(app);
 
 export { app, auth, db, analytics };
+
+export const getMentorClients = async () => {
+  try {
+    let clients = [];
+    await (
+      await getDocs(
+        collection(db, `Messages/jatin.dsquare@gmail.com/YourClients`)
+      )
+    ).forEach((doc) => {
+      clients.push({ ...doc.data() });
+    });
+    return clients;
+  } catch (err) {
+    console.log("Err: ", err);
+  }
+};
+
+export const updateMsgsInDatabase = async (uid, updatedData) => {
+  try {
+    return await updateDoc(
+      doc(db, `Messages/jatin.dsquare@gmail.com/YourClients`, `${uid}`),
+      updatedData
+    );
+  } catch (err) {
+    console.log("Err: ", err);
+  }
+};
