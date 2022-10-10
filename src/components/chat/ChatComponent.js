@@ -31,6 +31,7 @@ const ChatComponent = ({ clients }) => {
   };
 
   console.log(selectedClient);
+
   return (
     <div className={styles.chat}>
       <div className={styles["users-section"]}>
@@ -57,12 +58,14 @@ const ChatComponent = ({ clients }) => {
       <div className={styles["chat-section"]}>
         <div className={styles["top-bar"]}>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <img
-              src="https://sm.askmen.com/t/askmen_in/article/f/facebook-p/facebook-profile-picture-affects-chances-of-gettin_fr3n.1200.jpg"
-              alt="profile"
-              className={styles.profile}
-            />
-            {selectedClient.length ? (
+            {selectedClient.length === 0 ? null : (
+              <img
+                src="https://sm.askmen.com/t/askmen_in/article/f/facebook-p/facebook-profile-picture-affects-chances-of-gettin_fr3n.1200.jpg"
+                alt="profile"
+                className={styles.profile}
+              />
+            )}
+            {selectedClient?.messages ? (
               <h3>{selectedClient.client_Name}</h3>
             ) : null}
           </div>
@@ -73,7 +76,7 @@ const ChatComponent = ({ clients }) => {
         </div>
 
         <div className={styles["chat-area"]}>
-          {selectedClient
+          {selectedClient?.messages
             ? selectedClient.messages.map((curMsg) => (
                 <h4
                   className={
@@ -82,7 +85,7 @@ const ChatComponent = ({ clients }) => {
                       : styles["client-h4"]
                   }
                 >
-                  {curMsg.msg}
+                  {curMsg?.msg}
                 </h4>
               ))
             : null}

@@ -92,11 +92,15 @@
 .chat-area {
   height: 300px;
   background-color: #fff;
-  overflow: scroll;
+  overflow-y: scroll;
   overflow-x: hidden;
   padding: 0px 15px;
   display: flex;
   flex-direction: column;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
 }
 
 .chat-area h4 {
