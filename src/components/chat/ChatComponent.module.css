@@ -99,7 +99,7 @@
   flex-direction: column;
 }
 
-::-webkit-scrollbar {
+.chat-area::-webkit-scrollbar {
   width: 0px;
 }
 
@@ -161,4 +161,12 @@
   border-radius: 10px;
   outline: none;
   padding: 0.8rem;
+}
+
+.emoji-picker {
+  position: fixed;
+  bottom: 100px;
+  right: 100px;
+  border-radius: 10px;
+  box-shadow: 0pc 0px 20px #535353;
 }

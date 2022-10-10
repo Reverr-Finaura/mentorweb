@@ -16,17 +16,8 @@ const Chat = () => {
     fetchClients();
   }, []);
 
-  // const chatMain = document.getElementsByClassName("main__chat")[0];
-
-  window.addEventListener("onFocus", () => {
-    setShowChat(false);
-  });
-
   return (
     <>
-      {/* <div className={styles["main"]} onFocus={() => setShowChat(false)}>
-        Chat
-      </div> */}
       <button
         className={styles["chat-button"]}
         onClick={() => setShowChat(!showChat)}
@@ -34,7 +25,12 @@ const Chat = () => {
         Chat
       </button>
 
-      {showChat && <ChatComponent clients={mentorClients} />}
+      {showChat && (
+        <ChatComponent
+          clients={mentorClients}
+          onBlur={() => setShowChat(false)}
+        />
+      )}
     </>
   );
 };
