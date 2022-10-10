@@ -107,7 +107,11 @@
   padding: 10px;
   border: 2px solid grey;
   margin: 0.5rem 0rem;
-  /* color: ; */
+}
+
+.chat-area__message {
+  color: #eb1d36;
+  text-align: center;
 }
 
 .mentor-h4 {
