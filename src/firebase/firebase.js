@@ -9,6 +9,14 @@ import {
   doc,
 } from "firebase/firestore";
 
+import {
+  deleteObject,
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -22,6 +30,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+const storage = getStorage(app);
 const auth = getAuth();
 const db = getFirestore(app);
 
@@ -49,6 +58,17 @@ export const updateMsgsInDatabase = async (uid, updatedData) => {
       doc(db, `Messages/jatin.dsquare@gmail.com/YourClients`, `${uid}`),
       updatedData
     );
+  } catch (err) {
+    console.log("Err: ", err);
+  }
+};
+
+export const uploadMedia = async (media, path) => {
+  try {
+    await uploadBytesResumable(ref(storage, `${path}/${media.name}`), media);
+    const getMedia = await ref(storage, `${path}/${media.name}`);
+    const mediaLink = await getDownloadURL(getMedia);
+    return mediaLink;
   } catch (err) {
     console.log("Err: ", err);
   }

@@ -4,32 +4,73 @@ import add from "../../assets/img/add.png";
 import options from "../../assets/img/options.png";
 import attachment from "../../assets/img/attachment.png";
 import emoji from "../../assets/img/emoji.png";
-import { updateMsgsInDatabase } from "../../firebase/firebase";
+import { updateMsgsInDatabase, uploadMedia } from "../../firebase/firebase";
 import EmojiPicker from "emoji-picker-react";
 
 const ChatComponent = ({ clients }) => {
+  const [mentorClients, setMentorClients] = useState(clients);
   const [selectedClient, setSelectedClient] = useState([]);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [file, setFile] = useState(null);
   const msgEndRef = useRef(null);
 
   const [newMsg, setNewMsg] = useState([]);
 
   const sendMsg = async () => {
-    const curClientData = {
-      ...selectedClient,
-      messages: [
-        ...selectedClient.messages,
-        {
-          createdAt: new Date().toDateString(),
-          msg: newMsg,
-          sendBy: "jatin.dsquare@gmail.com",
-        },
-      ],
-    };
+    if (file) {
+      console.log(file)
+      console.log("In File Upload");
+      let fileUrl = await uploadMedia(file, "Messages");
+      const curClientData = {
+        ...selectedClient,
+        messages: [
+          ...selectedClient.messages,
+          {
+            createdAt: new Date().toDateString(),
+            msg: fileUrl,
+            sendBy: "jatin.dsquare@gmail.com",
+          },
+        ],
+      };
 
-    setSelectedClient(curClientData);
-    await updateMsgsInDatabase(selectedClient.uid, curClientData);
-    setNewMsg("");
+      setSelectedClient(curClientData);
+      setMentorClients(
+        mentorClients.map((data) => {
+          if (data.uid === selectedClient.uid) {
+            return (data = curClientData);
+          } else return data;
+        })
+      );
+
+      setNewMsg("");
+      setFile(null);
+      await updateMsgsInDatabase(selectedClient.uid, curClientData);
+    } else {
+      console.log("In Text");
+      const curClientData = {
+        ...selectedClient,
+        messages: [
+          ...selectedClient.messages,
+          {
+            createdAt: new Date().toDateString(),
+            msg: newMsg,
+            sendBy: "jatin.dsquare@gmail.com",
+          },
+        ],
+      };
+
+      setSelectedClient(curClientData);
+      setMentorClients(
+        mentorClients.map((data) => {
+          if (data.uid === selectedClient.uid) {
+            return (data = curClientData);
+          } else return data;
+        })
+      );
+
+      setNewMsg("");
+      // await updateMsgsInDatabase(selectedClient.uid, curClientData);
+    }
   };
 
   const onEmojiClickHandler = (emojiObj) => {
@@ -55,7 +96,7 @@ const ChatComponent = ({ clients }) => {
             />
           </div>
           <div className={styles["user-profiles"]}>
-            {clients.map((client) => (
+            {mentorClients.map((client) => (
               <div
                 onClick={() => {
                   setSelectedClient(client);
@@ -105,11 +146,20 @@ const ChatComponent = ({ clients }) => {
           </div>
 
           <div className={styles["bottom-bar"]}>
-            <img
-              src={attachment}
-              alt="attachment"
-              className={styles.attachment}
+            <label htmlFor="file">
+              <img
+                src={attachment}
+                alt="attachment"
+                className={styles.attachment}
+              />
+            </label>
+            <input
+              onInput={(e) => setFile(e.target.files[0])}
+              type="file"
+              id="file"
+              style={{ display: "none" }}
             />
+
             <img
               src={emoji}
               alt="emoji"
