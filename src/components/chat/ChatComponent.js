@@ -129,19 +129,25 @@ const ChatComponent = ({ clients }) => {
           </div>
 
           <div className={styles["chat-area"]} id="chat-area">
-            {selectedClient?.messages
-              ? selectedClient.messages.map((curMsg) => (
-                  <h4
-                    className={
-                      curMsg.sendBy == "jatin.dsquare@gmail.com"
-                        ? styles["mentor-h4"]
-                        : styles["client-h4"]
-                    }
-                  >
-                    {curMsg?.msg}
-                  </h4>
-                ))
-              : null}
+            {selectedClient?.messages ? (
+              selectedClient.messages.map((curMsg) => (
+                <h4
+                  className={
+                    curMsg.sendBy == "jatin.dsquare@gmail.com"
+                      ? styles["mentor-h4"]
+                      : styles["client-h4"]
+                  }
+                >
+                  {curMsg?.msg}
+                </h4>
+              ))
+            ) : (
+              <h3 className={styles["chat-area__message"]}>
+                Select a client first
+                <br />
+                to start chatting
+              </h3>
+            )}
             <div ref={msgEndRef} />
           </div>
 
