@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import ChatComponent from "../components/chat/ChatComponent";
-import { getMentorClients } from "../firebase/firebase";
+import ChatComponent from "../../components/chat/ChatComponent";
+import { getMentorClients } from "../../firebase/firebase";
 import styles from "./Chat.module.css";
 
 const Chat = () => {
