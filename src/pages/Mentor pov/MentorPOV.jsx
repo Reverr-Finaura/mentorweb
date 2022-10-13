@@ -63,7 +63,16 @@ const MentorPOV = () => {
               </div>
               <div className={styles.calender}>
                 <h1>Calender</h1>
-                <Calender />
+                <Calender className={styles.cal} />
+                <div className={styles.meetSch}>
+                  <h3>Schedule</h3>
+                  <p>
+                    13th April <span>Meet with Mr. Raj</span>
+                  </p>
+                  <p>
+                    22nd April <span>Meet with Mr. Raj</span>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
