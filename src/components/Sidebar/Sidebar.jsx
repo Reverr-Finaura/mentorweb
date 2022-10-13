@@ -44,7 +44,7 @@ function Sidebar() {
       onMouseOver={() => setIsHoveringSidebar(true)}
       onMouseOut={() => setIsHoveringSidebar(false)}
     >
-      <NavLink className={styles.navlink} to="/dashboard">
+      <NavLink className={styles.navlink} to="/">
         <div className={styles.sidebarOption}>
           <img
             src={
