@@ -23,7 +23,7 @@
 
 .meets {
   flex: 0.7;
-  background: rgba(42, 114, 222, 0.08);
+  background: #ffffff;
   border-radius: 5px;
   height: 80vh;
   overflow-y: scroll;
