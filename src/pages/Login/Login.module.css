@@ -12,6 +12,8 @@
   width: 85%;
   color: black;
   border-radius: 12px;
+  background: white;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
 .signup > form {
@@ -27,7 +29,7 @@
   height: 5vh;
 }
 
-.googleLoginBtn{
+.googleLoginBtn {
   display: flex;
   align-items: center;
   gap: 1rem;
