@@ -9,6 +9,12 @@
   /* line-height: 36px; */
   outline: none;
   border: none;
+  transition: all;
+}
+
+.button:hover {
+  background: #1463da;
+  box-shadow: none;
 }
 
 @media (max-width: 425px) {
