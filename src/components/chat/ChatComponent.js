@@ -4,7 +4,11 @@ import add from "../../assets/img/add.png";
 import options from "../../assets/img/options.png";
 import attachment from "../../assets/img/attachment.png";
 import emoji from "../../assets/img/emoji.png";
-import { updateMsgsInDatabase, uploadMedia } from "../../firebase/firebase";
+import {
+  getUserFromDatabase,
+  updateMsgsInDatabase,
+  uploadMedia,
+} from "../../firebase/firebase";
 import EmojiPicker from "emoji-picker-react";
 
 const ChatComponent = ({ clients }) => {
@@ -12,13 +16,18 @@ const ChatComponent = ({ clients }) => {
   const [selectedClient, setSelectedClient] = useState([]);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [file, setFile] = useState(null);
-  const msgEndRef = useRef(null);
 
+  const msgEndRef = useRef(null);
   const [newMsg, setNewMsg] = useState([]);
+
+  const getMessages = async () => {
+    let messages = await getUserFromDatabase(`${mentorClients[0]}`);
+    console.log(messages);
+  };
 
   const sendMsg = async () => {
     if (file) {
-      console.log(file)
+      console.log(file);
       console.log("In File Upload");
       let fileUrl = await uploadMedia(file, "Messages");
       const curClientData = {
@@ -82,7 +91,8 @@ const ChatComponent = ({ clients }) => {
     msgEndRef.current?.scrollIntoView();
   }, [newMsg, selectedClient]);
 
-  console.log(selectedClient);
+  console.log(mentorClients);
+  // console.log(clientsData);
 
   return (
     <>

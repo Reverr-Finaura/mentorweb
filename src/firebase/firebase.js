@@ -4,9 +4,12 @@ import { getAuth } from "firebase/auth";
 import {
   getFirestore,
   getDocs,
+  getDoc,
   collection,
   updateDoc,
   doc,
+  query,
+  where,
 } from "firebase/firestore";
 
 import {
@@ -36,19 +39,33 @@ const db = getFirestore(app);
 
 export { app, auth, db, analytics };
 
-export const getMentorClients = async () => {
+export const getMentorClients = async (email) => {
   try {
     let clients = [];
     await (
-      await getDocs(
-        collection(db, `Messages/jatin.dsquare@gmail.com/YourClients`)
-      )
+      await getDocs(collection(db, `Messages/${email}/YourClients`))
     ).forEach((doc) => {
       clients.push({ ...doc.data() });
     });
     return clients;
   } catch (err) {
     console.log("Err: ", err);
+  }
+};
+
+export const getUserFromDatabase = async (email) => {
+  try {
+    let user;
+    await (
+      await getDocs(
+        query(collection(db, "Users"), where("email", "==", `${email}`))
+      )
+    ).forEach((doc) => {
+      user = { ...doc.data() };
+    });
+    return user;
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -71,5 +88,24 @@ export const uploadMedia = async (media, path) => {
     return mediaLink;
   } catch (err) {
     console.log("Err: ", err);
+  }
+};
+
+export const fetchTransactionsFromDatabase = async (vendorEmail) => {
+  try {
+    let transactions = [];
+    await (
+      await getDocs(
+        query(
+          collection(db, "Payments"),
+          where("vendor", "==", `${vendorEmail}`)
+        )
+      )
+    ).forEach((doc) => {
+      transactions.push({ ...doc.data() });
+    });
+    return transactions;
+  } catch (err) {
+    console.log(err);
   }
 };

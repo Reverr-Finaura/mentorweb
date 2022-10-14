@@ -37,7 +37,7 @@ function Sidebar() {
       >
         <XIcon className={styles.xicon} />
       </div>
-      <NavLink className={styles.navlink} to="/dashboard">
+      <NavLink className={styles.navlink} to="/">
         <div className={styles.phnSidebarOption}>
           <img src="./images/dashboard.svg" alt="" />
           <p>Dashboard</p>
@@ -56,7 +56,7 @@ function Sidebar() {
           <p>Call</p>
         </div>
       </NavLink>
-      <NavLink className={styles.navlink} to="/funding">
+      <NavLink className={styles.navlink} to="/transaction">
         <div className={styles.phnSidebarOption}>
           <img src="./images/transaction.svg" alt="" />
           <p>Transaction</p>

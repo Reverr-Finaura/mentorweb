@@ -8,7 +8,7 @@ const Chat = () => {
   const [mentorClients, setMentorClients] = useState([]);
 
   const fetchClients = async () => {
-    let clients = await getMentorClients();
+    let clients = await getMentorClients("jatin.dsquare@gmail.com");
     setMentorClients(clients);
   };
 
