@@ -4,12 +4,13 @@ import { getAuth } from "firebase/auth";
 import {
   getFirestore,
   getDocs,
-  getDoc,
   collection,
   updateDoc,
   doc,
   query,
   where,
+  getDoc,
+  addDoc,
 } from "firebase/firestore";
 
 import {
@@ -39,13 +40,27 @@ const db = getFirestore(app);
 
 export { app, auth, db, analytics };
 
-export const getMentorClients = async (email) => {
+export const getUserFromDatabase = async (email) => {
+  let User;
+  await (
+    await getDocs(
+      query(collection(db, `Users`), where("email", "==", `${email}`))
+    )
+  ).forEach((doc) => {
+    User = { ...doc.data() };
+  });
+  return User;
+};
+
+export const getMentorClientsMsgs = async () => {
   try {
     let clients = [];
     await (
-      await getDocs(collection(db, `Messages/${email}/YourClients`))
+      await getDocs(
+        collection(db, `Messages/jatin.dsquare@gmail.com/YourClients`)
+      )
     ).forEach((doc) => {
-      clients.push({ ...doc.data() });
+      clients.push({ ...doc.data(), email: doc.id });
     });
     return clients;
   } catch (err) {
@@ -53,26 +68,32 @@ export const getMentorClients = async (email) => {
   }
 };
 
-export const getUserFromDatabase = async (email) => {
+// export const getMentorClientsDatabase = async (email) => {
+//   try {
+//     const result = await getDoc(
+//       doc(db, `Messages/jatin.dsquare@gmail.com/YourClients`, `${email}`)
+//     );
+//     return result.data();
+//   } catch (err) {
+//     console.log("Err: ", err);
+//   }
+// };
+
+export const addMsgsInDatabase = async (email, data) => {
   try {
-    let user;
-    await (
-      await getDocs(
-        query(collection(db, "Users"), where("email", "==", `${email}`))
-      )
-    ).forEach((doc) => {
-      user = { ...doc.data() };
-    });
-    return user;
+    return await addDoc(
+      doc(db, `Messages/jatin.dsquare@gmail.com/YourClients`, `${email}`),
+      data
+    );
   } catch (err) {
-    console.log(err);
+    console.log("Err: ", err);
   }
 };
 
-export const updateMsgsInDatabase = async (uid, updatedData) => {
+export const updateMsgsInDatabase = async (email, updatedData) => {
   try {
     return await updateDoc(
-      doc(db, `Messages/jatin.dsquare@gmail.com/YourClients`, `${uid}`),
+      doc(db, `Messages/jatin.dsquare@gmail.com/YourClients`, `${email}`),
       updatedData
     );
   } catch (err) {
@@ -80,16 +101,16 @@ export const updateMsgsInDatabase = async (uid, updatedData) => {
   }
 };
 
-export const uploadMedia = async (media, path) => {
-  try {
-    await uploadBytesResumable(ref(storage, `${path}/${media.name}`), media);
-    const getMedia = await ref(storage, `${path}/${media.name}`);
-    const mediaLink = await getDownloadURL(getMedia);
-    return mediaLink;
-  } catch (err) {
-    console.log("Err: ", err);
-  }
-};
+// export const uploadMedia = async (media, path) => {
+//   try {
+//     await uploadBytesResumable(ref(storage, `${path}/${media.name}`), media);
+//     const getMedia = await ref(storage, `${path}/${media.name}`);
+//     const mediaLink = await getDownloadURL(getMedia);
+//     return mediaLink;
+//   } catch (err) {
+//     console.log("Err: ", err);
+//   }
+// };
 
 export const fetchTransactionsFromDatabase = async (vendorEmail) => {
   try {

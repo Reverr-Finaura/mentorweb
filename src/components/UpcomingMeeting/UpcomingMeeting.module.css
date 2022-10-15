@@ -1,0 +1,57 @@
+.meet {
+  background: rgba(246, 246, 246, 0.75);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 27px;
+  color: #fff;
+  text-align: center;
+  padding: 15px 23px;
+  margin-bottom: 4%;
+}
+
+.meet > p {
+  font-weight: 600;
+  color: #2a72de;
+  font-size: 22px;
+  margin-bottom: 6px;
+  margin-top: 0;
+}
+
+.meet > h3 {
+  color: rgba(42, 114, 222, 0.75);
+  font-size: 30px;
+  font-weight: 600;
+  margin-top: 0;
+}
+
+.btns {
+  display: flex;
+  justify-content: space-around;
+}
+
+.btns > img {
+  width: 3rem;
+  cursor: pointer;
+}
+
+.btns > button {
+  font-weight: 400;
+  font-size: 20px;
+  color: #2a72de;
+  border: none;
+  padding: 10px 16px;
+  cursor: pointer;
+  background: #ffffff;
+  box-shadow: inset 2px -2px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 7px;
+}
+
+@media (max-width: 600px) {
+  .meet > p,
+  .btns > button {
+    font-size: 16px;
+  }
+
+  .meet > h3 {
+    font-size: 24px;
+  }
+}

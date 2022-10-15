@@ -7,6 +7,7 @@ import Search from "../../components/search/Search";
 import JoinMeet from "../../components/Join meet/JoinMeet";
 import Calender from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import UpcomingMeeting from "../../components/UpcomingMeeting/UpcomingMeeting";
 
 const MentorPOV = () => {
   const [width, setWidth] = useState(window.innerWidth);
@@ -50,20 +51,26 @@ const MentorPOV = () => {
                 <h3>Meet</h3>
                 <div>
                   {meetings.map((m, index) => (
-                    <div key={index} className={styles.meet}>
-                      <p>Your next meet on {m.date}</p>
-                      <h3>with {m.with}</h3>
-                      <div className={styles.btns}>
-                        <img src="/images/confirm.svg" alt="" />
-                        <button>Reschedule</button>
-                      </div>
-                    </div>
+                    <UpcomingMeeting
+                      key={index + Math.random()}
+                      date={m.date}
+                      email={m.with}
+                    />
                   ))}
                 </div>
               </div>
               <div className={styles.calender}>
                 <h1>Calender</h1>
-                <Calender />
+                <Calender className={styles.cal} />
+                <div className={styles.meetSch}>
+                  <h3>Schedule</h3>
+                  <p>
+                    13th April <span>Meet with Mr. Raj</span>
+                  </p>
+                  <p>
+                    22nd April <span>Meet with Mr. Raj</span>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
