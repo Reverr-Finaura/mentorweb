@@ -4,50 +4,73 @@ import add from "../../assets/img/add.png";
 import options from "../../assets/img/options.png";
 import attachment from "../../assets/img/attachment.png";
 import emoji from "../../assets/img/emoji.png";
-import { updateMsgsInDatabase, uploadMedia } from "../../firebase/firebase";
+// import { updateMsgsInDatabase, uploadMedia } from "../../firebase/firebase";
 import EmojiPicker from "emoji-picker-react";
+import {
+  getMentorClientsDatabase,
+  getUserFromDatabase,
+  updateMsgsInDatabase,
+} from "../../firebase/firebase";
 
-const ChatComponent = ({ clients }) => {
-  const [mentorClients, setMentorClients] = useState(clients);
+const ChatComponent = ({ clients, clientMsgs }) => {
   const [selectedClient, setSelectedClient] = useState([]);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [mentorClientMsgs, setMentorClientMsgs] = useState(clientMsgs);
+
+  console.log(mentorClientMsgs);
   const [file, setFile] = useState(null);
   const msgEndRef = useRef(null);
 
   const [newMsg, setNewMsg] = useState([]);
 
+  console.log(selectedClient);
+
   const sendMsg = async () => {
-    if (file) {
-      console.log(file)
-      console.log("In File Upload");
-      let fileUrl = await uploadMedia(file, "Messages");
-      const curClientData = {
+    // if (file) {
+    //   console.log(file)
+    //   console.log("In File Upload");
+    //   let fileUrl = await uploadMedia(file, "Messages");
+    //   const curClientData = {
+    //     ...selectedClient,
+    //     messages: [
+    //       ...selectedClient.messages,
+    //       {
+    //         createdAt: new Date().toDateString(),
+    //         msg: fileUrl,
+    //         sendBy: "jatin.dsquare@gmail.com",
+    //       },
+    //     ],
+    //   };
+
+    //   setSelectedClient(curClientData);
+    //   setMentorClients(
+    //     mentorClients.map((data) => {
+    //       if (data.uid === selectedClient.uid) {
+    //         return (data = curClientData);
+    //       } else return data;
+    //     })
+    //   );
+
+    //   setNewMsg("");
+    //   setFile(null);
+    //   await updateMsgsInDatabase(selectedClient.uid, curClientData);
+    // } else {
+
+    var curClientData;
+
+    if (selectedClient.messages === null) {
+      curClientData = {
         ...selectedClient,
         messages: [
-          ...selectedClient.messages,
           {
             createdAt: new Date().toDateString(),
-            msg: fileUrl,
+            msg: newMsg,
             sendBy: "jatin.dsquare@gmail.com",
           },
         ],
       };
-
-      setSelectedClient(curClientData);
-      setMentorClients(
-        mentorClients.map((data) => {
-          if (data.uid === selectedClient.uid) {
-            return (data = curClientData);
-          } else return data;
-        })
-      );
-
-      setNewMsg("");
-      setFile(null);
-      await updateMsgsInDatabase(selectedClient.uid, curClientData);
     } else {
-      console.log("In Text");
-      const curClientData = {
+      curClientData = {
         ...selectedClient,
         messages: [
           ...selectedClient.messages,
@@ -58,19 +81,21 @@ const ChatComponent = ({ clients }) => {
           },
         ],
       };
-
-      setSelectedClient(curClientData);
-      setMentorClients(
-        mentorClients.map((data) => {
-          if (data.uid === selectedClient.uid) {
-            return (data = curClientData);
-          } else return data;
-        })
-      );
-
-      setNewMsg("");
-      // await updateMsgsInDatabase(selectedClient.uid, curClientData);
     }
+
+    setSelectedClient(curClientData);
+
+    setMentorClientMsgs(
+      mentorClientMsgs.map((data) => {
+        if (data.email === selectedClient.email) {
+          return (data = curClientData);
+        } else setMentorClientMsgs([...mentorClientMsgs, curClientData]);
+      })
+    );
+
+    setNewMsg("");
+
+    // await updateMsgsInDatabase(selectedClient.email, curClientData);
   };
 
   const onEmojiClickHandler = (emojiObj) => {
@@ -81,8 +106,6 @@ const ChatComponent = ({ clients }) => {
   useEffect(() => {
     msgEndRef.current?.scrollIntoView();
   }, [newMsg, selectedClient]);
-
-  console.log(selectedClient);
 
   return (
     <>
@@ -96,14 +119,29 @@ const ChatComponent = ({ clients }) => {
             />
           </div>
           <div className={styles["user-profiles"]}>
-            {mentorClients.map((client) => (
+            {clients.map((client, index) => (
               <div
+                key={index}
                 onClick={() => {
-                  setSelectedClient(client);
+                  mentorClientMsgs.map((data) => {
+                    if (data.email == client.email) {
+                      setSelectedClient({
+                        image: client.image,
+                        name: client.name,
+                        ...data,
+                      });
+                    } else {
+                      setSelectedClient({
+                        image: client.image,
+                        name: client.name,
+                        email: client.email,
+                        messages: null,
+                      });
+                    }
+                  });
                 }}
-                key={client.client_Name}
               >
-                {client.client_Name}
+                {client.name}
               </div>
             ))}
           </div>
@@ -113,14 +151,12 @@ const ChatComponent = ({ clients }) => {
             <div style={{ display: "flex", alignItems: "center" }}>
               {selectedClient.length === 0 ? null : (
                 <img
-                  src="https://sm.askmen.com/t/askmen_in/article/f/facebook-p/facebook-profile-picture-affects-chances-of-gettin_fr3n.1200.jpg"
+                  src={selectedClient.image}
                   alt="profile"
                   className={styles.profile}
                 />
               )}
-              {selectedClient?.messages ? (
-                <h3>{selectedClient.client_Name}</h3>
-              ) : null}
+              {selectedClient ? <h3>{selectedClient.name}</h3> : null}
             </div>
             <div style={{ display: "flex", alignItems: "center" }}>
               <img src={add} alt="add" className={styles.add} />
@@ -141,6 +177,8 @@ const ChatComponent = ({ clients }) => {
                   {curMsg?.msg}
                 </h4>
               ))
+            ) : selectedClient?.messages === null ? (
+              <h3 style={{ color: "grey" }}>No Conversation yet!</h3>
             ) : (
               <h3 className={styles["chat-area__message"]}>
                 Select a client first
@@ -148,6 +186,7 @@ const ChatComponent = ({ clients }) => {
                 to start chatting
               </h3>
             )}
+
             <div ref={msgEndRef} />
           </div>
 
@@ -183,12 +222,12 @@ const ChatComponent = ({ clients }) => {
               onChange={(e) => setNewMsg(e.target.value)}
               placeholder="Message"
               className={styles["message-input"]}
-              disabled={selectedClient.length === 0 ? true : false}
+              // disabled={selectedClient.length === 0 ? true : false}
             />
           </div>
         </div>
       </div>
-      {showEmojiPicker && selectedClient.length !== 0 && (
+      {showEmojiPicker && (
         <div className={styles["emoji-picker"]}>
           <EmojiPicker onEmojiClick={onEmojiClickHandler} width={300} />
         </div>
