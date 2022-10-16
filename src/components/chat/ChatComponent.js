@@ -23,7 +23,7 @@ const ChatComponent = ({ clients, clientMsgs }) => {
 
   const [newMsg, setNewMsg] = useState([]);
 
-  console.log(selectedClient);
+  // console.log(selectedClient);
 
   const sendMsg = async () => {
     // if (file) {
@@ -85,13 +85,17 @@ const ChatComponent = ({ clients, clientMsgs }) => {
 
     setSelectedClient(curClientData);
 
-    setMentorClientMsgs(
-      mentorClientMsgs.map((data) => {
-        if (data.email === selectedClient.email) {
-          return (data = curClientData);
-        } else setMentorClientMsgs([...mentorClientMsgs, curClientData]);
-      })
-    );
+    for (let i = 0; i < mentorClientMsgs.length; i++) {
+      if (mentorClientMsgs[i] === selectedClient.email) {
+        console.log(true);
+      } else {
+        // setMentorClientMsgs([...mentorClientMsgs, curClientData]);
+
+        console.log(false);
+      }
+    }
+
+    console.log("cur : ", curClientData);
 
     setNewMsg("");
 
@@ -124,7 +128,7 @@ const ChatComponent = ({ clients, clientMsgs }) => {
                 key={index}
                 onClick={() => {
                   mentorClientMsgs.map((data) => {
-                    if (data.email == client.email) {
+                    if (data.email === client.email) {
                       setSelectedClient({
                         image: client.image,
                         name: client.name,
