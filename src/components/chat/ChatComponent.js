@@ -11,19 +11,20 @@ import {
   getUserFromDatabase,
   updateMsgsInDatabase,
 } from "../../firebase/firebase";
+import { useSelector } from "react-redux";
 
 const ChatComponent = ({ clients, clientMsgs }) => {
   const [selectedClient, setSelectedClient] = useState([]);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [mentorClientMsgs, setMentorClientMsgs] = useState(clientMsgs);
 
-  console.log(mentorClientMsgs);
+  // console.log(mentorClientMsgs);
   const [file, setFile] = useState(null);
   const msgEndRef = useRef(null);
 
   const [newMsg, setNewMsg] = useState([]);
 
-  console.log(selectedClient);
+  // console.log(selectedClient);
 
   const sendMsg = async () => {
     // if (file) {
@@ -57,7 +58,6 @@ const ChatComponent = ({ clients, clientMsgs }) => {
     // } else {
 
     var curClientData;
-
     if (selectedClient.messages === null) {
       curClientData = {
         ...selectedClient,
@@ -89,7 +89,7 @@ const ChatComponent = ({ clients, clientMsgs }) => {
       mentorClientMsgs.map((data) => {
         if (data.email === selectedClient.email) {
           return (data = curClientData);
-        } else setMentorClientMsgs([...mentorClientMsgs, curClientData]);
+        } else return [...mentorClientMsgs, curClientData];
       })
     );
 
@@ -123,8 +123,8 @@ const ChatComponent = ({ clients, clientMsgs }) => {
               <div
                 key={index}
                 onClick={() => {
-                  mentorClientMsgs.map((data) => {
-                    if (data.email == client.email) {
+                  mentorClientMsgs.forEach((data) => {
+                    if (data.email === client.email) {
                       setSelectedClient({
                         image: client.image,
                         name: client.name,
@@ -178,7 +178,9 @@ const ChatComponent = ({ clients, clientMsgs }) => {
                 </h4>
               ))
             ) : selectedClient?.messages === null ? (
-              <h3 style={{ color: "grey" }}>No Conversation yet!</h3>
+              <h3 style={{ color: "grey", textAlign: "center" }}>
+                No Conversation yet!
+              </h3>
             ) : (
               <h3 className={styles["chat-area__message"]}>
                 Select a client first
@@ -222,7 +224,7 @@ const ChatComponent = ({ clients, clientMsgs }) => {
               onChange={(e) => setNewMsg(e.target.value)}
               placeholder="Message"
               className={styles["message-input"]}
-              // disabled={selectedClient.length === 0 ? true : false}
+              disabled={selectedClient.length === 0 ? true : false}
             />
           </div>
         </div>
