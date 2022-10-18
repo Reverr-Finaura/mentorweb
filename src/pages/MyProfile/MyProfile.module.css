@@ -42,6 +42,22 @@
   cursor: pointer;
 }
 
+.edit-profile {
+  margin-top: 5rem;
+  padding: 1rem 5rem;
+  border: none;
+  background: #2a72de;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.edit-profile:hover {
+  opacity: 0.8;
+}
+
 .bg1 {
   position: absolute;
   width: 400px;

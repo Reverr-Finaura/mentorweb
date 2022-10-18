@@ -4,8 +4,11 @@ import Navbar from "../../components/Navbar/Navbar";
 import PhnSidebar from "../../components/PhnSidebar/PhnSidebar";
 import Search from "../../components/search/Search";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import { useNavigate } from "react-router-dom";
 
 const MyProfile = () => {
+  const navigate = useNavigate();
+
   const [width, setWidth] = useState(window.innerWidth);
 
   const updateWidth = () => {
@@ -98,6 +101,12 @@ const MyProfile = () => {
                   <img src="/images/linkedin.png" alt="linkedin" />
                 </div>
               </div>
+              <button
+                className={styles["edit-profile"]}
+                onClick={() => navigate("/edit-profile")}
+              >
+                Edit Profile
+              </button>
             </div>
           </div>
         </div>
