@@ -4,6 +4,20 @@
   align-items: center;
 }
 
+.confirmBtn {
+  padding: 1rem;
+  background-color: #2a72de;
+  color: white;
+  border: none;
+  outline: none;
+  border-radius: 1rem;
+  cursor: pointer;
+}
+
+.confirmBtn:hover {
+  background-color: #105ed2;
+}
+
 .body {
   width: 96%;
   display: flex;
