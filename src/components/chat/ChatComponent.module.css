@@ -45,6 +45,7 @@
   border-right: 2px solid #fff;
   border-radius: 0px 0px 0px 20px;
   color: #fff;
+  text-transform: capitalize;
 }
 
 .user-profiles div {
@@ -67,6 +68,7 @@
   background-color: rgba(42, 114, 222, 0.3);
   padding: 0 1rem;
   color: #fff;
+  text-transform: capitalize;
   border-radius: 0px 20px 0px 0px;
 }
 

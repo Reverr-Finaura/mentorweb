@@ -85,13 +85,17 @@ const ChatComponent = ({ clients, clientMsgs }) => {
 
     setSelectedClient(curClientData);
 
-    setMentorClientMsgs(
-      mentorClientMsgs.map((data) => {
-        if (data.email === selectedClient.email) {
-          return (data = curClientData);
-        } else return [...mentorClientMsgs, curClientData];
-      })
-    );
+    for (let i = 0; i < mentorClientMsgs.length; i++) {
+      if (mentorClientMsgs[i] === selectedClient.email) {
+        console.log(true);
+      } else {
+        // setMentorClientMsgs([...mentorClientMsgs, curClientData]);
+
+        console.log(false);
+      }
+    }
+
+    console.log("cur : ", curClientData);
 
     setNewMsg("");
 
@@ -123,7 +127,7 @@ const ChatComponent = ({ clients, clientMsgs }) => {
               <div
                 key={index}
                 onClick={() => {
-                  mentorClientMsgs.forEach((data) => {
+                  mentorClientMsgs.map((data) => {
                     if (data.email === client.email) {
                       setSelectedClient({
                         image: client.image,
