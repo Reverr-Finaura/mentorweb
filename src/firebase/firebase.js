@@ -11,6 +11,7 @@ import {
   where,
   getDoc,
   addDoc,
+  setDoc,
 } from "firebase/firestore";
 
 import {
@@ -81,7 +82,7 @@ export const getMentorClientsMsgs = async () => {
 
 export const addMsgsInDatabase = async (email, data) => {
   try {
-    return await addDoc(
+    return await setDoc(
       doc(db, `Messages/jatin.dsquare@gmail.com/YourClients`, `${email}`),
       data
     );
@@ -101,16 +102,16 @@ export const updateMsgsInDatabase = async (email, updatedData) => {
   }
 };
 
-// export const uploadMedia = async (media, path) => {
-//   try {
-//     await uploadBytesResumable(ref(storage, `${path}/${media.name}`), media);
-//     const getMedia = await ref(storage, `${path}/${media.name}`);
-//     const mediaLink = await getDownloadURL(getMedia);
-//     return mediaLink;
-//   } catch (err) {
-//     console.log("Err: ", err);
-//   }
-// };
+export const uploadMedia = async (media, path) => {
+  try {
+    await uploadBytesResumable(ref(storage, `${path}/${media.name}`), media);
+    const getMedia = await ref(storage, `${path}/${media.name}`);
+    const mediaLink = await getDownloadURL(getMedia);
+    return mediaLink;
+  } catch (err) {
+    console.log("Err: ", err);
+  }
+};
 
 export const fetchTransactionsFromDatabase = async (vendorEmail) => {
   try {
