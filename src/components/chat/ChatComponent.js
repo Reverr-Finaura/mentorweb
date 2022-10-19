@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import styles from "./ChatComponent.module.css";
 import add from "../../assets/img/add.png";
 import options from "../../assets/img/options.png";
@@ -13,6 +13,7 @@ import {
   updateMsgsInDatabase,
   uploadMedia,
 } from "../../firebase/firebase";
+import { useSelector } from "react-redux";
 
 const ChatComponent = ({ clients, clientMsgs }) => {
   const [selectedClient, setSelectedClient] = useState([]);
@@ -34,7 +35,6 @@ const ChatComponent = ({ clients, clientMsgs }) => {
     if (file) {
       console.log("FILE_SELECTED");
       console.log("FILE :", file);
-
       setIsLoading(true);
 
       let fileUrl = await uploadMedia(file, "Messages");
@@ -160,42 +160,12 @@ const ChatComponent = ({ clients, clientMsgs }) => {
         setNewMsg("");
       }
     }
-    // if (file) {
-    //   console.log(file)
-    //   console.log("In File Upload");
-    //   let fileUrl = await uploadMedia(file, "Messages");
-    //   const curClientData = {
-    //     ...selectedClient,
-    //     messages: [
-    //       ...selectedClient.messages,
-    //       {
-    //         createdAt: new Date().toDateString(),
-    //         msg: fileUrl,
-    //         sendBy: "jatin.dsquare@gmail.com",
-    //       },
-    //     ],
-    //   };
-
-    //   setSelectedClient(curClientData);
-    //   setMentorClients(
-    //     mentorClients.map((data) => {
-    //       if (data.uid === selectedClient.uid) {
-    //         return (data = curClientData);
-    //       } else return data;
-    //     })
-    //   );
-
-    //   setNewMsg("");
-    //   setFile(null);
-    //   await updateMsgsInDatabase(selectedClient.uid, curClientData);
-    // } else {
   };
 
   const onEmojiClickHandler = (emojiObj) => {
     setNewMsg((prevInput) => prevInput + emojiObj.emoji);
     setShowEmojiPicker(false);
   };
-
   useEffect(() => {
     msgEndRef.current?.scrollIntoView();
   }, [newMsg, selectedClient]);
@@ -322,7 +292,9 @@ const ChatComponent = ({ clients, clientMsgs }) => {
                 }
               })
             ) : selectedClient?.messages === null ? (
-              <h3 style={{ color: "grey" }}>No Conversation yet!</h3>
+              <h3 style={{ color: "grey", textAlign: "center" }}>
+                No Conversation yet!
+              </h3>
             ) : (
               <h3 className={styles["chat-area__message"]}>
                 Select a client first
@@ -373,7 +345,7 @@ const ChatComponent = ({ clients, clientMsgs }) => {
               onChange={(e) => setNewMsg(e.target.value)}
               placeholder="Message"
               className={styles["message-input"]}
-              // disabled={selectedClient.length === 0 ? true : false}
+              disabled={selectedClient.length === 0 ? true : false}
             />
           </div>
         </div>

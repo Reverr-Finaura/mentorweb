@@ -41,6 +41,34 @@ const db = getFirestore(app);
 
 export { app, auth, db, analytics };
 
+export const getMentorFromDatabase = async (email) => {
+  let Mentor;
+  await (
+    await getDocs(
+      query(collection(db, "Users"), where("email", "==", `${email}`))
+    )
+  ).forEach((doc) => {
+    Mentor = { ...doc.data() };
+  });
+  return Mentor;
+};
+
+export const updateUserInDatabse = async (uid, collection, data) => {
+  try {
+    return await updateDoc(doc(db, `${collection}`, uid), data);
+  } catch (err) {
+    console.log("Err: ", err);
+  }
+};
+
+export const updateMentorInDatabse = async (email, collection, data) => {
+  try {
+    return await updateDoc(doc(db, `${collection}`), email);
+  } catch (err) {
+    console.log("Err: ", err);
+  }
+};
+
 export const getUserFromDatabase = async (email) => {
   let User;
   await (

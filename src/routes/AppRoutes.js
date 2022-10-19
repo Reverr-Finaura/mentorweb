@@ -5,6 +5,8 @@ import Chat from "../pages/Chats/Chat";
 import MentorPOV from "../pages/Mentor pov/MentorPOV";
 import Transaction from "../pages/Transaction/Transaction";
 import Login from "../pages/Login/Login";
+import MyProfile from "../pages/MyProfile/MyProfile";
+import EditProfile from "../pages/EditProfile/EditProfile";
 
 const AppRoutes = () => {
   return (
@@ -13,6 +15,8 @@ const AppRoutes = () => {
       <Route path="/schedule" element={<Calender />} />
       <Route path="/chat" element={<Chat />} />
       <Route path="/transaction" element={<Transaction />} />
+      <Route path="/myprofile" element={<MyProfile />} />
+      <Route path="/edit-profile" element={<EditProfile />} />
     </Routes>
   );
 };
