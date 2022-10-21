@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ChatComponent from "../../components/chat/ChatComponent";
+import Navbar from "../../components/Navbar/Navbar";
 import {
   getMentorClientsDatabase,
   getMentorClientsMsgs,
@@ -39,6 +40,7 @@ const Chat = () => {
 
   return (
     <>
+      <Navbar />
       <button
         className={styles["chat-button"]}
         onClick={() => {
