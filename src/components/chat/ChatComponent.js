@@ -27,7 +27,7 @@ const ChatComponent = ({ clients, clientMsgs }) => {
   const [newMsg, setNewMsg] = useState([]);
 
   // console.log(selectedClient);
-  console.log(clientMsgs);
+  // console.log(clientMsgs);
   // console.log(mentorClientMsgs);
 
   const sendMsg = async () => {
@@ -338,6 +338,9 @@ const ChatComponent = ({ clients, clientMsgs }) => {
                 src={attachment}
                 alt="attachment"
                 className={styles.attachment}
+                style={
+                  selectedClient.length === 0 ? { cursor: "no-drop" } : null
+                }
               />
             </label>
             <input
@@ -348,13 +351,19 @@ const ChatComponent = ({ clients, clientMsgs }) => {
               type="file"
               id="file"
               style={{ display: "none" }}
+              disabled={selectedClient.length === 0 ? true : false}
             />
-
             <img
               src={emoji}
               alt="emoji"
               className={styles.emoji}
-              onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+              onClick={() => {
+                if (selectedClient.length === 0) {
+                  return;
+                }
+                setShowEmojiPicker(!showEmojiPicker);
+              }}
+              style={selectedClient.length === 0 ? { cursor: "no-drop" } : null}
             />
             <input
               value={newMsg}
@@ -374,6 +383,7 @@ const ChatComponent = ({ clients, clientMsgs }) => {
               placeholder="Message"
               className={styles["message-input"]}
               disabled={selectedClient.length === 0 ? true : false}
+              style={selectedClient.length === 0 ? { cursor: "no-drop" } : null}
             />
           </div>
         </div>

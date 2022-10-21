@@ -11,6 +11,9 @@ const Chat = () => {
   const [showChat, setShowChat] = useState(false);
   const [clients, setClients] = useState([]);
   const [clientMsgs, setClientMsgs] = useState([]);
+  const [random, setRandom] = useState(Math.random());
+
+  const reRender = () => setRandom(Math.random());
 
   const fetchClients = async () => {
     let result = await getUserFromDatabase("jatin.dsquare@gmail.com");
@@ -32,12 +35,16 @@ const Chat = () => {
   useEffect(() => {
     fetchClients();
     fetchClientsMsgs();
-  }, []);
+  }, [random]);
+
   return (
     <>
       <button
         className={styles["chat-button"]}
-        onClick={() => setShowChat(!showChat)}
+        onClick={() => {
+          setShowChat(!showChat);
+          reRender();
+        }}
       >
         Chat
       </button>

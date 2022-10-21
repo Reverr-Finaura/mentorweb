@@ -47,9 +47,11 @@ function Navbar() {
             <img src="/images/calender.svg" alt="" />
           </div>
         </Link>
-        <div>
-          <img src="/images/message.svg" alt="" />
-        </div>
+        <Link className={styles.link} to="/chat">
+          <div>
+            <img src="/images/message.svg" alt="" />
+          </div>
+        </Link>
         <Link className={styles.link} to="/myprofile">
           <div>
             <img src="/images/profile.svg" alt="" />
