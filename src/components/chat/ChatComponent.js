@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import styles from "./ChatComponent.module.css";
 import add from "../../assets/img/add.png";
 import options from "../../assets/img/options.png";
@@ -7,9 +7,11 @@ import emoji from "../../assets/img/emoji.png";
 // import { updateMsgsInDatabase, uploadMedia } from "../../firebase/firebase";
 import EmojiPicker from "emoji-picker-react";
 import {
+  addMsgsInDatabase,
   getMentorClientsDatabase,
   getUserFromDatabase,
   updateMsgsInDatabase,
+  uploadMedia,
 } from "../../firebase/firebase";
 import { useSelector } from "react-redux";
 
@@ -17,97 +19,153 @@ const ChatComponent = ({ clients, clientMsgs }) => {
   const [selectedClient, setSelectedClient] = useState([]);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [mentorClientMsgs, setMentorClientMsgs] = useState(clientMsgs);
-
-  console.log(mentorClientMsgs);
+  const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState(null);
   const msgEndRef = useRef(null);
 
   const [newMsg, setNewMsg] = useState([]);
 
-  console.log(selectedClient);
-  console.log(clients);
+  // console.log(selectedClient);
+  console.log(clientMsgs);
+  // console.log(mentorClientMsgs);
 
   const sendMsg = async () => {
-    // if (file) {
-    //   console.log(file)
-    //   console.log("In File Upload");
-    //   let fileUrl = await uploadMedia(file, "Messages");
-    //   const curClientData = {
-    //     ...selectedClient,
-    //     messages: [
-    //       ...selectedClient.messages,
-    //       {
-    //         createdAt: new Date().toDateString(),
-    //         msg: fileUrl,
-    //         sendBy: "jatin.dsquare@gmail.com",
-    //       },
-    //     ],
-    //   };
+    // FOR SENDING FILE
 
-    //   setSelectedClient(curClientData);
-    //   setMentorClients(
-    //     mentorClients.map((data) => {
-    //       if (data.uid === selectedClient.uid) {
-    //         return (data = curClientData);
-    //       } else return data;
-    //     })
-    //   );
+    if (file) {
+      console.log("FILE_SELECTED");
+      console.log("FILE :", file);
+      setIsLoading(true);
 
-    //   setNewMsg("");
-    //   setFile(null);
-    //   await updateMsgsInDatabase(selectedClient.uid, curClientData);
-    // } else {
+      let fileUrl = await uploadMedia(file, "Messages");
+      var curClientData;
 
-    var curClientData;
-    if (selectedClient.messages === null) {
-      curClientData = {
-        ...selectedClient,
-        messages: [
-          {
-            createdAt: new Date().toDateString(),
-            msg: newMsg,
-            sendBy: "jatin.dsquare@gmail.com",
-          },
-        ],
-      };
-    } else {
-      curClientData = {
-        ...selectedClient,
-        messages: [
-          ...selectedClient.messages,
-          {
-            createdAt: new Date().toDateString(),
-            msg: newMsg,
-            sendBy: "jatin.dsquare@gmail.com",
-          },
-        ],
-      };
-    }
-
-    setSelectedClient(curClientData);
-
-    for (let i = 0; i < mentorClientMsgs.length; i++) {
-      if (mentorClientMsgs[i] === selectedClient.email) {
-        console.log(true);
+      if (selectedClient.messages === null) {
+        curClientData = {
+          ...selectedClient,
+          messages: [
+            {
+              createdAt: new Date().toDateString(),
+              msg: fileUrl,
+              sendBy: "jatin.dsquare@gmail.com",
+              type: file.type,
+            },
+          ],
+        };
       } else {
-        // setMentorClientMsgs([...mentorClientMsgs, curClientData]);
+        curClientData = {
+          ...selectedClient,
+          messages: [
+            ...selectedClient.messages,
+            {
+              createdAt: new Date().toDateString(),
+              msg: fileUrl,
+              sendBy: "jatin.dsquare@gmail.com",
+              type: file.type,
+            },
+          ],
+        };
+      }
+      setSelectedClient(curClientData);
+      setIsLoading(false);
 
-        console.log(false);
+      var isExist;
+      for (let i = 0; i < mentorClientMsgs.length; i++) {
+        if (mentorClientMsgs[i].email == selectedClient.email) {
+          isExist = true;
+          break;
+        } else {
+          isExist = false;
+        }
+      }
+      if (isExist) {
+        setMentorClientMsgs(
+          mentorClientMsgs.map((data) => {
+            if (data.email == selectedClient.email) {
+              return data, curClientData;
+            } else {
+              return data;
+            }
+          })
+        );
+        await updateMsgsInDatabase(selectedClient.email, {
+          messages: curClientData.messages,
+        });
+      } else {
+        setMentorClientMsgs([...mentorClientMsgs, curClientData]);
+        await addMsgsInDatabase(selectedClient.email, {
+          messages: curClientData.messages,
+        });
+      }
+      setFile(null);
+    } else {
+      if (newMsg) {
+        var curClientData;
+
+        if (selectedClient.messages === null) {
+          curClientData = {
+            ...selectedClient,
+            messages: [
+              {
+                createdAt: new Date().toDateString(),
+                msg: newMsg,
+                sendBy: "jatin.dsquare@gmail.com",
+                type: "text",
+              },
+            ],
+          };
+        } else {
+          curClientData = {
+            ...selectedClient,
+            messages: [
+              ...selectedClient.messages,
+              {
+                createdAt: new Date().toDateString(),
+                msg: newMsg,
+                sendBy: "jatin.dsquare@gmail.com",
+                type: "text",
+              },
+            ],
+          };
+        }
+        setSelectedClient(curClientData);
+        var isExist;
+        for (let i = 0; i < mentorClientMsgs.length; i++) {
+          if (mentorClientMsgs[i].email == selectedClient.email) {
+            isExist = true;
+            break;
+          } else {
+            isExist = false;
+          }
+        }
+        if (isExist) {
+          setMentorClientMsgs(
+            mentorClientMsgs.map((data) => {
+              if (data.email == selectedClient.email) {
+                return data, curClientData;
+              } else {
+                return data;
+              }
+            })
+          );
+          await updateMsgsInDatabase(selectedClient.email, {
+            messages: curClientData.messages,
+          });
+        } else {
+          setMentorClientMsgs([...mentorClientMsgs, curClientData]);
+          await addMsgsInDatabase(selectedClient.email, {
+            messages: curClientData.messages,
+          });
+        }
+        setNewMsg("");
       }
     }
-
-    console.log("cur : ", curClientData);
-
-    setNewMsg("");
-
-    // await updateMsgsInDatabase(selectedClient.email, curClientData);
   };
 
   const onEmojiClickHandler = (emojiObj) => {
     setNewMsg((prevInput) => prevInput + emojiObj.emoji);
     setShowEmojiPicker(false);
   };
-
   useEffect(() => {
     msgEndRef.current?.scrollIntoView();
   }, [newMsg, selectedClient]);
@@ -128,22 +186,34 @@ const ChatComponent = ({ clients, clientMsgs }) => {
               <div
                 key={index}
                 onClick={() => {
-                  mentorClientMsgs.map((data) => {
-                    if (data.email === client.email) {
-                      setSelectedClient({
-                        image: client.image,
-                        name: client.name,
-                        ...data,
-                      });
+                  var isEmailExist = false;
+                  for (let i = 0; i < mentorClientMsgs.length; i++) {
+                    if (mentorClientMsgs[i].email == client.email) {
+                      isEmailExist = true;
+                      break;
                     } else {
-                      setSelectedClient({
-                        image: client.image,
-                        name: client.name,
-                        email: client.email,
-                        messages: null,
-                      });
+                      isEmailExist = false;
                     }
-                  });
+                  }
+
+                  if (isEmailExist) {
+                    mentorClientMsgs.map((data) => {
+                      if (data.email == client.email) {
+                        setSelectedClient({
+                          image: client.image,
+                          name: client.name,
+                          ...data,
+                        });
+                      }
+                    });
+                  } else {
+                    setSelectedClient({
+                      image: client.image,
+                      name: client.name,
+                      email: client.email,
+                      messages: null,
+                    });
+                  }
                 }}
               >
                 {client.name}
@@ -171,17 +241,56 @@ const ChatComponent = ({ clients, clientMsgs }) => {
 
           <div className={styles["chat-area"]} id="chat-area">
             {selectedClient?.messages ? (
-              selectedClient.messages.map((curMsg) => (
-                <h4
-                  className={
-                    curMsg.sendBy == "jatin.dsquare@gmail.com"
-                      ? styles["mentor-h4"]
-                      : styles["client-h4"]
-                  }
-                >
-                  {curMsg?.msg}
-                </h4>
-              ))
+              selectedClient.messages.map((curMsg) => {
+                if (curMsg.type == "text") {
+                  return (
+                    <>
+                      <h4
+                        className={
+                          curMsg.sendBy == "jatin.dsquare@gmail.com"
+                            ? styles["mentor-h4"]
+                            : styles["client-h4"]
+                        }
+                      >
+                        {curMsg?.msg}
+                      </h4>
+                      ;
+                    </>
+                  );
+                } else if (
+                  curMsg.type == "image/jpeg" ||
+                  curMsg.type == "image/png"
+                ) {
+                  return (
+                    <>
+                      <a
+                        className={
+                          curMsg.sendBy == "jatin.dsquare@gmail.com"
+                            ? styles["mentor-img"]
+                            : styles["client-img"]
+                        }
+                        href={curMsg.msg}
+                        target="_blank"
+                      >
+                        <img
+                          style={{ width: "50%" }}
+                          src={curMsg.msg}
+                          alt="img"
+                        />
+                      </a>
+                    </>
+                  );
+                } else {
+                  return (
+                    <a href={curMsg.msg} target="_blank">
+                      <img
+                        style={{ width: "50%" }}
+                        src="https://cdn-icons-png.flaticon.com/512/4725/4725970.png"
+                      />
+                    </a>
+                  );
+                }
+              })
             ) : selectedClient?.messages === null ? (
               <h3 style={{ color: "grey", textAlign: "center" }}>
                 No Conversation yet!
@@ -195,6 +304,13 @@ const ChatComponent = ({ clients, clientMsgs }) => {
             )}
 
             <div ref={msgEndRef} />
+            {isLoading ? (
+              <h5
+                style={{ position: "absolute", right: "2rem", bottom: "15%" }}
+              >
+                SENDING FILE...
+              </h5>
+            ) : null}
           </div>
 
           <div className={styles["bottom-bar"]}>

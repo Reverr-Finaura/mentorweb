@@ -11,6 +11,7 @@ import {
   where,
   getDoc,
   addDoc,
+  setDoc,
 } from "firebase/firestore";
 
 import {
@@ -39,6 +40,34 @@ const auth = getAuth();
 const db = getFirestore(app);
 
 export { app, auth, db, analytics };
+
+export const getMentorFromDatabase = async (email) => {
+  let Mentor;
+  await (
+    await getDocs(
+      query(collection(db, "Users"), where("email", "==", `${email}`))
+    )
+  ).forEach((doc) => {
+    Mentor = { ...doc.data() };
+  });
+  return Mentor;
+};
+
+export const updateUserInDatabse = async (uid, collection, data) => {
+  try {
+    return await updateDoc(doc(db, `${collection}`, uid), data);
+  } catch (err) {
+    console.log("Err: ", err);
+  }
+};
+
+export const updateMentorInDatabse = async (email, collection, data) => {
+  try {
+    return await updateDoc(doc(db, `${collection}`), email);
+  } catch (err) {
+    console.log("Err: ", err);
+  }
+};
 
 export const getUserFromDatabase = async (email) => {
   let User;
@@ -81,7 +110,7 @@ export const getMentorClientsMsgs = async () => {
 
 export const addMsgsInDatabase = async (email, data) => {
   try {
-    return await addDoc(
+    return await setDoc(
       doc(db, `Messages/jatin.dsquare@gmail.com/YourClients`, `${email}`),
       data
     );
@@ -101,16 +130,16 @@ export const updateMsgsInDatabase = async (email, updatedData) => {
   }
 };
 
-// export const uploadMedia = async (media, path) => {
-//   try {
-//     await uploadBytesResumable(ref(storage, `${path}/${media.name}`), media);
-//     const getMedia = await ref(storage, `${path}/${media.name}`);
-//     const mediaLink = await getDownloadURL(getMedia);
-//     return mediaLink;
-//   } catch (err) {
-//     console.log("Err: ", err);
-//   }
-// };
+export const uploadMedia = async (media, path) => {
+  try {
+    await uploadBytesResumable(ref(storage, `${path}/${media.name}`), media);
+    const getMedia = await ref(storage, `${path}/${media.name}`);
+    const mediaLink = await getDownloadURL(getMedia);
+    return mediaLink;
+  } catch (err) {
+    console.log("Err: ", err);
+  }
+};
 
 export const fetchTransactionsFromDatabase = async (vendorEmail) => {
   try {
