@@ -13,7 +13,7 @@ const Chat = () => {
   const [clientMsgs, setClientMsgs] = useState([]);
   const [random, setRandom] = useState(Math.random());
 
-  const reRender = () => setRandom(Math.random());
+  const reRenderComponent = () => setRandom(Math.random());
 
   const fetchClients = async () => {
     let result = await getUserFromDatabase("jatin.dsquare@gmail.com");
@@ -43,7 +43,7 @@ const Chat = () => {
         className={styles["chat-button"]}
         onClick={() => {
           setShowChat(!showChat);
-          reRender();
+          reRenderComponent();
         }}
       >
         Chat
