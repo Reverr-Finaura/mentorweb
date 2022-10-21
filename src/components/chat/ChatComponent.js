@@ -14,6 +14,7 @@ import {
   uploadMedia,
 } from "../../firebase/firebase";
 import { useSelector } from "react-redux";
+import { toast, Toaster } from "react-hot-toast";
 
 const ChatComponent = ({ clients, clientMsgs }) => {
   const [selectedClient, setSelectedClient] = useState([]);
@@ -254,7 +255,6 @@ const ChatComponent = ({ clients, clientMsgs }) => {
                       >
                         {curMsg?.msg}
                       </h4>
-                      ;
                     </>
                   );
                 } else if (
@@ -264,28 +264,47 @@ const ChatComponent = ({ clients, clientMsgs }) => {
                   return (
                     <>
                       <a
+                        href={curMsg.msg}
+                        target="_blank"
+                        rel="noreferrer"
                         className={
                           curMsg.sendBy == "jatin.dsquare@gmail.com"
                             ? styles["mentor-img"]
                             : styles["client-img"]
                         }
-                        href={curMsg.msg}
-                        target="_blank"
                       >
                         <img
-                          style={{ width: "50%" }}
                           src={curMsg.msg}
                           alt="img"
+                          style={{
+                            width: "50%",
+                            border: "2px solid #b9ceef",
+                            borderRadius: "10px",
+                          }}
                         />
                       </a>
                     </>
                   );
                 } else {
                   return (
-                    <a href={curMsg.msg} target="_blank">
+                    <a
+                      href={curMsg.msg}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={
+                        curMsg.sendBy == "jatin.dsquare@gmail.com"
+                          ? styles["mentor-img"]
+                          : styles["client-img"]
+                      }
+                    >
                       <img
-                        style={{ width: "50%" }}
-                        src="https://cdn-icons-png.flaticon.com/512/4725/4725970.png"
+                        src="/images/doc.png"
+                        alt="doc"
+                        style={{
+                          width: "50%",
+                          border: "2px solid transparent",
+                          borderRadius: "10px",
+                        }}
                       />
                     </a>
                   );
@@ -322,7 +341,10 @@ const ChatComponent = ({ clients, clientMsgs }) => {
               />
             </label>
             <input
-              onInput={(e) => setFile(e.target.files[0])}
+              onInput={(e) => {
+                setFile(e.target.files[0]);
+                toast.success('File selected, press "Enter ↩" to send');
+              }}
               type="file"
               id="file"
               style={{ display: "none" }}
@@ -339,6 +361,12 @@ const ChatComponent = ({ clients, clientMsgs }) => {
               type="text"
               onKeyPress={(e) => {
                 if (e.key == "Enter") {
+                  if (file === null) {
+                    if (!newMsg.replace(/\s/g, "").length) {
+                      toast.error("Enter atleast one character");
+                      return;
+                    }
+                  }
                   sendMsg();
                 }
               }}
@@ -355,6 +383,7 @@ const ChatComponent = ({ clients, clientMsgs }) => {
           <EmojiPicker onEmojiClick={onEmojiClickHandler} width={300} />
         </div>
       )}
+      <Toaster />
     </>
   );
 };

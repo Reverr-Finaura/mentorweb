@@ -176,3 +176,15 @@
   border-radius: 10px;
   box-shadow: 0pc 0px 20px #535353;
 }
+
+.mentor-img {
+  display: flex;
+  justify-content: flex-end;
+  margin: 5px 0;
+}
+
+.client-img {
+  display: flex;
+  justify-content: flex-start;
+  margin: 5px 0;
+}
