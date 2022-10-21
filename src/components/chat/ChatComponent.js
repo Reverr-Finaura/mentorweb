@@ -18,13 +18,14 @@ const ChatComponent = ({ clients, clientMsgs }) => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [mentorClientMsgs, setMentorClientMsgs] = useState(clientMsgs);
 
-  // console.log(mentorClientMsgs);
+  console.log(mentorClientMsgs);
   const [file, setFile] = useState(null);
   const msgEndRef = useRef(null);
 
   const [newMsg, setNewMsg] = useState([]);
 
-  // console.log(selectedClient);
+  console.log(selectedClient);
+  console.log(clients);
 
   const sendMsg = async () => {
     // if (file) {
