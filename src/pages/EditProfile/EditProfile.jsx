@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Education from "../../components/Education/Education";
 import Navbar from "../../components/Navbar/Navbar";
+import ProfessionalDetails from "../../components/ProfessionalDetails/ProfessionalDetails";
 import styles from "./EditProfile.module.css";
 
 const EditProfile = () => {
@@ -17,6 +18,9 @@ const EditProfile = () => {
   const [facebook, setFacebook] = useState("");
   const [twitter, setTwitter] = useState("");
   const [linkedin, setLinkedin] = useState("");
+  const [futureGoals, setFutureGoals] = useState("");
+  const [vision, setVision] = useState("");
+  const [haveStartup, setHaveStartup] = useState("");
 
   return (
     <>
@@ -118,6 +122,39 @@ const EditProfile = () => {
           <br />
           <h1>Let's know about your Education</h1>
           <Education />
+          <h1>Now let's get your Professional Profile Done</h1>
+          <ProfessionalDetails />
+          <div className={styles["input-fields"]}>
+            <textarea
+              placeholder="Your Future Goals"
+              rows={5}
+              onChange={(e) => setFutureGoals(e.target.value)}
+            />
+            <textarea
+              placeholder="Your Vision"
+              rows={5}
+              onChange={(e) => setVision(e.target.value)}
+            />
+          </div>
+          <h1>Do you have a Start-up?</h1>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div
+              className={styles["start-up-query"]}
+              onClick={(e) => {
+                setHaveStartup(true);
+              }}
+            >
+              Yes
+            </div>
+            <div
+              className={styles["start-up-query"]}
+              onClick={() => {
+                setHaveStartup(false);
+              }}
+            >
+              No
+            </div>
+          </div>
         </form>
       </div>
     </>
