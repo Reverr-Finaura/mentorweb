@@ -1,4 +1,4 @@
-.education {
+.professional {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -14,39 +14,6 @@
   align-items: center;
 }
 
-.form > select {
-  all: unset;
-  color: #000;
-  width: 100%;
-  padding: 8px;
-  margin-top: 1rem;
-  border: 2px solid #2a72de;
-  outline: none;
-  border-radius: 5px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background: url("../../assets/img/expand-arrow.png") 98% / 6% no-repeat #eee;
-  background-size: 13px;
-  background-color: #fff;
-  cursor: pointer;
-}
-
-.form > select::-ms-expand {
-  display: none;
-}
-
-select:invalid {
-  color: gray;
-}
-
-.form > label {
-  font-size: 18px;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  width: 104%;
-}
-
 .form > input {
   width: 100%;
   padding: 0.5rem;
@@ -54,6 +21,7 @@ select:invalid {
   border-radius: 5px;
   outline: none;
   font-size: 18px;
+  margin: 1rem;
 }
 
 .form > input::placeholder {
@@ -79,9 +47,9 @@ select:invalid {
   cursor: pointer;
 }
 
-.education-details-card {
-  border: 2px solid #2a72de;
+.professional-details-card {
   background-color: #fff;
+  border: 2px solid #2a72de;
   border-radius: 10px;
   display: flex;
   justify-content: center;
@@ -92,7 +60,7 @@ select:invalid {
   cursor: default;
 }
 
-.education-details-card:hover {
+.professional-details-card:hover {
   box-shadow: 0 0 20px #ccc;
 }
 
