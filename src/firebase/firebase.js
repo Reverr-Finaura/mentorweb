@@ -81,13 +81,12 @@ export const getUserFromDatabase = async (email) => {
   return User;
 };
 
-export const getMentorClientsMsgs = async () => {
+export const getMentorMsgs = async (email) => {
   try {
     let clients = [];
+
     await (
-      await getDocs(
-        collection(db, `Messages/jatin.dsquare@gmail.com/YourClients`)
-      )
+      await getDocs(collection(db, `Messages/${email}/YourClients`))
     ).forEach((doc) => {
       clients.push({ ...doc.data(), email: doc.id });
     });
@@ -97,21 +96,31 @@ export const getMentorClientsMsgs = async () => {
   }
 };
 
-// export const getMentorClientsDatabase = async (email) => {
-//   try {
-//     const result = await getDoc(
-//       doc(db, `Messages/jatin.dsquare@gmail.com/YourClients`, `${email}`)
-//     );
-//     return result.data();
-//   } catch (err) {
-//     console.log("Err: ", err);
-//   }
-// };
+export const getClientMsgs = async (email) => {
+  try {
+    let clients = [];
 
-export const addMsgsInDatabase = async (email, data) => {
+    await (
+      await getDocs(collection(db, `Messages/${email}/YourMentors`))
+    ).forEach((doc) => {
+      clients.push({ ...doc.data(), email: doc.id });
+    });
+
+    console.log(clients);
+    return clients;
+  } catch (err) {
+    console.log("Err: ", err);
+  }
+};
+
+export const addMsgsInMentorDatabase = async (
+  mentorEmail,
+  clientEmail,
+  data
+) => {
   try {
     return await setDoc(
-      doc(db, `Messages/jatin.dsquare@gmail.com/YourClients`, `${email}`),
+      doc(db, `Messages/${mentorEmail}/YourClients`, `${clientEmail}`),
       data
     );
   } catch (err) {
@@ -119,12 +128,42 @@ export const addMsgsInDatabase = async (email, data) => {
   }
 };
 
-export const updateMsgsInDatabase = async (email, updatedData) => {
+export const addMsgsInClientDatabase = async (
+  clientEmail,
+  mentorEmail,
+  data
+) => {
   try {
-    return await updateDoc(
-      doc(db, `Messages/jatin.dsquare@gmail.com/YourClients`, `${email}`),
-      updatedData
+    return await setDoc(
+      doc(db, `Messages/${clientEmail}/YourMentors`, `${mentorEmail}`),
+      data
     );
+  } catch (err) {
+    console.log("Err: ", err);
+  }
+};
+
+export const updateMsgsInMentorDatabase = async (
+  mentorEmail,
+  clientEmail,
+  updatedData
+) => {
+  try {
+    const docRef = `Messages/${mentorEmail}/YourClients`;
+    return await updateDoc(doc(db, docRef, clientEmail), updatedData);
+  } catch (err) {
+    console.log("Err: ", err);
+  }
+};
+
+export const updateMsgsInClientDatabase = async (
+  clientEmail,
+  mentorEmail,
+  updatedData
+) => {
+  try {
+    const docRef = `Messages/${clientEmail}/YourMentors`;
+    return await updateDoc(doc(db, docRef, mentorEmail), updatedData);
   } catch (err) {
     console.log("Err: ", err);
   }
