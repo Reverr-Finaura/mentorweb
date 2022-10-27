@@ -42,7 +42,7 @@ const MyProfile = () => {
           <div id="bg4" className={styles.bg4}></div>
           <Sidebar isVisible={width >= 600 ? true : false} />
           <div className={styles.content}>
-            <Search />
+            {/* <Search /> */}
             <div className={styles.profile}>
               <h1>Profile</h1>
               <img src="/images/profile.png" alt="profile" />

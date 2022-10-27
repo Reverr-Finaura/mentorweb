@@ -34,15 +34,15 @@ function Navbar() {
         {/* <p>REVERR</p> */}
       </div>
       <div className={styles.options}>
-        <Link className={styles.link} to="/notifications">
+        {/* <Link className={styles.link} to="/notifications">
           <div>
             <img src="/images/notification.svg" alt="" />
           </div>
-        </Link>
-        <div>
+        </Link> */}
+        {/* <div>
           <img src="/images/help.svg" alt="" />
-        </div>
-        <Link className={styles.link} to="/dashboard/#calendar">
+        </div> */}
+        <Link className={styles.link} to="/#calendar">
           <div>
             <img src="/images/calender.svg" alt="" />
           </div>

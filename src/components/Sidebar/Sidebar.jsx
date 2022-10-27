@@ -75,19 +75,6 @@ function Sidebar() {
           </p>
         </div>
       </NavLink>
-      <NavLink className={styles.navlink} to="/call">
-        <div className={styles.sidebarOption}>
-          <img
-            src={
-              pathname === "/call"
-                ? "/images/call-selected.svg"
-                : "/images/call.svg"
-            }
-            alt=""
-          />
-          <p style={{ display: isHoveringSidebar ? "block" : "none" }}>Call</p>
-        </div>
-      </NavLink>
       <NavLink className={styles.navlink} to="/transaction">
         <div className={styles.sidebarOption}>
           <img
@@ -103,7 +90,16 @@ function Sidebar() {
           </p>
         </div>
       </NavLink>
-      <NavLink className={styles.navlink} to="/upgrade">
+      <NavLink className={styles.navlink} to="/settings">
+        <div className={styles.sidebarOption}>
+          <img
+            src="/images/setting.png"
+            alt=""
+          />
+          <p style={{ display: isHoveringSidebar ? "block" : "none" }}>settings</p>
+        </div>
+      </NavLink>
+      {/* <NavLink className={styles.navlink} to="/upgrade">
         <div className={styles.sidebarOption}>
           <img
             src={
@@ -117,7 +113,7 @@ function Sidebar() {
             Upgrade
           </p>
         </div>
-      </NavLink>
+      </NavLink> */}
     </div>
   );
 }

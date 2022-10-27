@@ -1,6 +1,6 @@
 .meet {
-  background: rgba(246, 246, 246, 0.75);
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  background: white;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   border-radius: 27px;
   color: #fff;
   text-align: center;
@@ -36,13 +36,18 @@
 .btns > button {
   font-weight: 400;
   font-size: 20px;
-  color: #2a72de;
+  color: white;
   border: none;
   padding: 10px 16px;
   cursor: pointer;
-  background: #ffffff;
-  box-shadow: inset 2px -2px 4px rgba(0, 0, 0, 0.25);
+  background: #2a72de;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   border-radius: 7px;
+}
+
+.btns > button :hover{
+  background-color: #fff;
+  color: #2a72de;
 }
 
 @media (max-width: 600px) {

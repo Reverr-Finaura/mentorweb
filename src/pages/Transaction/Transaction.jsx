@@ -48,7 +48,7 @@ const Transaction = () => {
         <div className={styles.body}>
           <Sidebar isVisible={width >= 600 ? true : false} />
           <div className={styles.content}>
-            <Search />
+            {/* <Search /> */}
             <h2>
               <img
                 src="/images/wallet.svg"

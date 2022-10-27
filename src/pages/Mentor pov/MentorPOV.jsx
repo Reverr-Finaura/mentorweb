@@ -34,7 +34,7 @@ const MentorPOV = () => {
       date: "30th September",
       with: "Dr. Vinna",
     },
-  ];
+  ]; 
 
   return (
     <>
@@ -44,11 +44,11 @@ const MentorPOV = () => {
         <div className={styles.body}>
           <Sidebar isVisible={width >= 600 ? true : false} />
           <div className={styles.content}>
-            <Search />
-            <JoinMeet />
+            {/* <Search />
+            <JoinMeet /> */}
             <div className={styles.meetsNCal}>
-              <div className={styles.meets}>
-                <h3>Meet</h3>
+              <div className={styles.meets} style={{backgroundColor:"rgba(246, 246, 246, 0.75)"}}>
+                <h3>Meetings</h3>
                 <div>
                   {meetings.map((m, index) => (
                     <UpcomingMeeting
@@ -61,7 +61,7 @@ const MentorPOV = () => {
               </div>
               <div className={styles.calender}>
                 <h1>Calender</h1>
-                <Calender className={styles.cal} />
+                <Calender className={styles.cal} style={{boder:"none", boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px"}} />
                 <div className={styles.meetSch}>
                   <h3>Schedule</h3>
                   <p>

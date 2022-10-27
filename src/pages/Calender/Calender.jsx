@@ -29,10 +29,7 @@ const Calender = () => {
   };
 
   const week = [
-    {
-      id: 0,
-      day: "Sunday",
-    },
+    { id: 0, day: "Sunday"},
     { id: 1, day: "Monday" },
     { id: 2, day: "Tuesday" },
     { id: 3, day: "Wednesday" },
@@ -76,7 +73,7 @@ const Calender = () => {
         <div className={styles.body}>
           <Sidebar isVisible={width >= 600 ? true : false} />
           <div className={styles.content}>
-            <Search />
+            {/* <Search /> */}
             <div className={styles.schedule_container}>
               <h1>Set your availability</h1>
               <p>
@@ -89,8 +86,18 @@ const Calender = () => {
                   <option value="">09:00</option>
                   <option value="">10:00</option>
                   <option value="">12:00</option>
+                  <option value="">13:00</option>
+                  <option value="">14:00</option>
+                  <option value="">15:00</option>
+                  <option value="">16:00</option>
                 </select>
                 <select name="hours" id="" className={styles.endhr}>
+                  <option value="">10:00</option>
+                  <option value="">12:00</option>
+                  <option value="">13:00</option>
+                  <option value="">14:00</option>
+                  <option value="">15:00</option>
+                  <option value="">16:00</option>
                   <option value="">17:00</option>
                   <option value="">18:00</option>
                   <option value="">19:00</option>
