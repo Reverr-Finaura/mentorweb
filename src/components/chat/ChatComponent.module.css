@@ -175,10 +175,11 @@
 
 .emoji-picker {
   position: fixed;
-  bottom: 100px;
+  bottom: 80px;
   right: 100px;
   border-radius: 10px;
   box-shadow: 0pc 0px 20px #535353;
+  z-index: 99;
 }
 
 .mentor-img {
