@@ -1,11 +1,13 @@
 .chat {
   position: fixed;
-  bottom: 40px;
-  right: 40px;
+  bottom: 20px;
+  right: 20px;
   width: max-content;
   border-radius: 20px;
   box-shadow: 0 0 20px #535353;
   display: flex;
+  background-color: #fff;
+  z-index: 99;
 }
 
 .users-section {
